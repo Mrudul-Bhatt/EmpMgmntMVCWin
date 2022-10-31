@@ -4,10 +4,18 @@
 @{
 }
 
-@model List<EmpMgmnt.Models.Domain.Employee>
-
+@model BigViewModel
 
 <h1>Employees</h1>
+<br />
+<form method="post" action="Index">
+    <div class="mb-3">
+        <label for="" class="form-label">Enter Name</label>
+        <input type="text" class="form-control" asp-for="searchEmployee.Name" >
+    </div>
+
+    <button type="submit" class="btn btn-primary" asp-action="Index" asp-controller="Employees">Search</button>
+</form>
 
 <table class="table">
     <thead>
@@ -22,7 +30,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var employee in Model)
+        @foreach (var employee in Model.Employee)
         {
             <tr>
                 <td>@employee.Id</td>

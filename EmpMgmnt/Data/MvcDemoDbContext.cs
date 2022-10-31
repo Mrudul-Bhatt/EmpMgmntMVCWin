@@ -1,4 +1,4 @@
-﻿using EmpMgmnt.Models.Domain;
+﻿using EmpMgmnt.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmpMgmnt.Data

@@ -1,8 +1,9 @@
 ﻿using EmpMgmnt.Data;
 using EmpMgmnt.Models;
-using EmpMgmnt.Models.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Dynamic;
+using System.Xml.Linq;
 
 namespace EmpMgmnt.Controllers
 {
@@ -18,8 +19,29 @@ namespace EmpMgmnt.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            //dynamic mymodel = new ExpandoObject();
+
             var employees = await _demoDbContext.Employees.ToListAsync();
-            return View(employees);
+            var bigModel = new BigViewModel();
+            bigModel.Employee = employees;
+            return View(bigModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(BigViewModel searchName)
+        {
+
+            if (searchName.searchEmployee.Name != null)
+            {
+                var employees = await _demoDbContext.Employees.Where(x => x.Name.Contains(searchName.searchEmployee.Name)).ToListAsync();
+
+                var bigModel = new BigViewModel();
+                bigModel.Employee = employees;
+                bigModel.searchEmployee = searchName.searchEmployee;
+                return View(bigModel);
+            }
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -106,6 +128,29 @@ namespace EmpMgmnt.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Search()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async void Search(string name)
+        {
+            var employee = _demoDbContext.Employees.Where(x => x.Name.Contains(name));
+
+            //if (employee != null)
+            //{
+            //    //await _demoDbContext.Employees.Remove(employee);
+            //    _demoDbContext.Employees.Remove(employee);
+            //    await _demoDbContext.SaveChangesAsync();
+
+            //    return RedirectToAction("Index");
+            //}
+
+            
         }
     }  
 }

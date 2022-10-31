@@ -1,4 +1,4 @@
-﻿namespace EmpMgmnt.Models.Domain
+﻿namespace EmpMgmnt.Models
 {
     public class Employee
     {
